@@ -26,34 +26,47 @@ Formatos = {"1": "Primeira parte. (Aqui_Pasta_Pasta)",
 
 
 def apresentacao_estilo():
-    # Exibição do estilos na Janela.
-    for label in Estilos.values():
-        texto_label = Label(frame_principal, text=label)
-        texto_label.pack()
-
     # Primeira pergunta:
     resposta_estilo = Label(frame_principal, text="Qual estilo de organização você prefere?: ")
-    entrada.pack()
-    botao_enviar = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), DefinirEstilo()])
-    botao_enviar.pack()
+    resposta_estilo.pack()
+
+    numeração = 0
+    # Exibição do estilos na Janela.
+    for label, humber in Estilos.items():
+        numeração += 1
+
+        texto_label = Label(frame_principal, text=humber)
+        texto_label.pack()
+        botao_enviar = Button(frame_principal, text=f"Opção {numeração}", command=lambda escolha=label[0]: [limpar_frame_principal(), DefinirEstilo(escolha)])
+        botao_enviar.pack()
 
 
-def DefinirEstilo():
+def DefinirEstilo(escolha):
     global EstiloEscolhido
+    EstiloEscolhido = escolha
+    print(escolha)
 
-    resposta_estilo = entrada.get()
+    resposta_estilo = escolha
+    print(escolha)
     for palavra_chave, resposta in Estilos.items():
         for palavra in palavra_chave:
-            if palavra in resposta_estilo:
+            if palavra == resposta_estilo:
                 for chave, valor in Estilos_form.items():
-                    texto_label = Label(frame_principal, text=f"Você escolheu o estilo {chave}.", wraplength=500)
-                    texto_label.pack()
-                    texto_label = Label(frame_principal, text=f"Seus arquivos estarão no formato{valor}", wraplength=500)
-                    texto_label.pack()
-                    print("Deu certo")
-                    break
+                    if resposta_estilo == "1":
+                        texto_label = Label(frame_principal, text=f"Você escolheu o estilo Padrão.", wraplength=500)
+                        texto_label.pack()
+                        texto_label = Label(frame_principal, text=f"Seus arquivos estarão no formato Textp_Texto_Texto.", wraplength=500)
+                        texto_label.pack()
+                        print("Deu certo estilo 1")
+                        break
+                    elif resposta_estilo == "2":
+                        texto_label = Label(frame_principal, text=f"Você escolheu o estilo Customizado.", wraplength=500)
+                        texto_label.pack()
+                        texto_label = Label(frame_principal, text=f"Seus arquivos estarão no formato Custom_Custom_custom.", wraplength=500)
+                        texto_label.pack()
+                        print("Deu certo estilo 2")
+                        break
 
-                EstiloEscolhido = palavra
                 print(EstiloEscolhido)
                 questionario()
             else:
@@ -65,8 +78,7 @@ def DefinirEstilo():
 
 def questionario():
     global EstiloEscolhido
-
-    entrada.delete(0, "end")
+    print(f"eu sou burro {EstiloEscolhido}")
 
     if EstiloEscolhido in {"1", "2"}:
         texto_label = Label(frame_principal, text=f"Tenha em mente que o formato precisa ser como foi especificado nos estilos.", wraplength=500)
@@ -78,7 +90,7 @@ def questionario():
         texto_label = Label(frame_principal, text="Você confirma sua escolha? S/N: ", wraplength=500)
         texto_label.pack()
 
-        botao_sim = Button(frame_principal, text="Sim", command=lambda: [limpar_frame_principal(),definir_formato()])
+        botao_sim = Button(frame_principal, text="Sim", command=lambda: [limpar_frame_principal(), definir_formato()])
         botao_sim.pack()
         botao_nao = Button(frame_principal, text="Não", command=lambda: [limpar_frame_principal(), apresentacao_estilo()])
         botao_nao.pack()
@@ -89,9 +101,6 @@ def questionario():
 # Variáveis responsáveis pelo Formato Padrão
 def definir_formato():
     global EstiloEscolhido
-    global FormatoEscolhido
-
-    entrada.delete(0, "end")
 
     if EstiloEscolhido == "1":
         print("EstiloEscolhido")
@@ -107,61 +116,72 @@ def definir_formato():
         texto_label = Label(frame_principal, text=f"Caso, porém, deseje que seus arquivos sejam nomeados em outra ordem, digite 'Trocar'. Caso deseje manter, digite 'Manter': ", wraplength=500)
         texto_label.pack()
 
-        entrada.pack()
+        botao_Trocar = Button(frame_principal, text="Trocar", command=lambda: [limpar_frame_principal(), definir_formato2()])
+        botao_Trocar.pack()
 
-        botao_enviar = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_formato2()])
-        botao_enviar.pack()
+        botao_Manter = Button(frame_principal, text="Manter", command=lambda: [limpar_frame_principal(), manter_formato()])
+        botao_Manter.pack()
+
     else:
         print("nao estou fincionad bapai")
+
+
+def manter_formato():
+    global primeira_pasta
+    global segunda_pasta
+
+    texto_label = Label(frame_principal, text="Ok! Você escolheu manter o formato padrão.")
+    texto_label.pack()
+
+    primeira_pasta = 0
+    segunda_pasta = 1
+
+    definir_pasta()
 
 
 def definir_formato2():
     global primeira_pasta
     global segunda_pasta
 
-    resposta_formato = entrada.get()
+    # Definir o formato em que as pastas serão organizadas.
+    texto_label = Label(frame_principal, text=f"{Formatos}")
+    texto_label.pack()
 
-    entrada.delete(0, "end")
+    texto_label = Label(frame_principal, text="Qual parte dos textos dos arquivos você deseja que seja o nome da sua Primeira leva de pastas?: ")
+    texto_label.pack()
 
-    resposta_formato = resposta_formato.lower()
-    if resposta_formato == "trocar":
-        # Definir o formato em que as pastas serão organizadas.
-        texto_label = Label(frame_principal, text=f"{Formatos}")
-        texto_label.pack()
+    entrada.pack()
 
-        texto_label = Label(frame_principal, text="Qual parte dos textos dos arquivos você deseja que seja o nome da sua Primeira leva de pastas?: ")
-        texto_label.pack()
+    botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_formato3()])
+    botao.pack()
+    print("POHA CARALHO VOLTEI PRA CA")
 
-        entrada.pack()
 
-        botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_formato3()])
-        botao.pack()
-    elif resposta == "manter":
-        texto_label = Label(frame_principal, text="Ok! Você escolheu manter o formato padrão.")
-        texto_label.pack()
-
-        primeira_pasta = 0
-        segunda_pasta = 1
-
-        definir_pasta()
 
 
 def definir_formato3():
     global primeira_pasta
 
     primeira_pasta = entrada.get()
-    primeira_pasta = int(primeira_pasta)
-    print(primeira_pasta)
 
-    entrada.delete(0, "end")
+    try:
+        primeira_pasta = int(primeira_pasta)
+        print(primeira_pasta)
 
-    texto_label = Label(frame_principal, text="Qual parte dos textos dos arquivos você deseja que seja o nome da sua Segunda leva de pastas?: ")
-    texto_label.pack()
+        entrada.delete(0, "end")
 
-    entrada.pack()
+        texto_label = Label(frame_principal, text="Qual parte dos textos dos arquivos você deseja que seja o nome da sua Segunda leva de pastas?: ")
+        texto_label.pack()
 
-    botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_formato4()])
-    botao.pack()
+        entrada.pack()
+
+        botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_formato4()])
+        botao.pack()
+
+    except ValueError:
+        texto_label = Label(frame_abaixo, text="Entrada inválida. Por favor, digite um número inteiro.", fg="red")
+        texto_label.pack()
+        definir_formato2()
 
 
 def definir_formato4():
@@ -169,18 +189,25 @@ def definir_formato4():
     global segunda_pasta
 
     segunda_pasta = entrada.get()
-    segunda_pasta = int(segunda_pasta)
-    print(segunda_pasta)
+    try:
+        segunda_pasta = int(segunda_pasta)
+        print(segunda_pasta)
 
-    entrada.delete(0, "end")
+        entrada.delete(0, "end")
 
-    primeira_pasta -= 1
-    segunda_pasta -= 1
+        primeira_pasta -= 1
+        segunda_pasta -= 1
 
-    print(primeira_pasta, segunda_pasta)
+        print(primeira_pasta, segunda_pasta)
 
-    definir_pasta()
+        definir_pasta()
 
+    except ValueError:
+        texto_label = Label(frame_abaixo, text="Falha na criação das configurações.", fg="green")
+        texto_label.pack()
+        entrada.delete(0, "end")
+        entrada.insert(0, "")
+        definir_formato3()
 
 
 def definir_pasta():
@@ -188,35 +215,21 @@ def definir_pasta():
     texto_label = Label(frame_principal,text="Você já possui uma pasta para a organização do projeto? S/N: ")
     texto_label.pack()
 
-    entrada.pack()
+    botao_existe = Button(frame_principal, text="Tenho.", command=lambda: [limpar_frame_principal(), definir_pasta2()])
+    botao_existe.pack()
 
-    botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_pasta2()])
-    botao.pack()
+    botao_inexistente = Button(frame_principal, text="Não tenho.", command=lambda: [limpar_frame_principal(), confirmar_criacao_pasta()])
+    botao_inexistente.pack()
 
 
 def definir_pasta2():
-    possui_pasta = entrada.get()
+    texto_label = Label(frame_principal, text="Digite o caminho da sua pasta (ex: Images/.../PastaDoArquivo): ")
+    texto_label.pack()
 
-    entrada.delete(0, "end")
+    entrada.pack()
 
-    possui_pasta = possui_pasta.lower()
-    if possui_pasta in {"s", "sim"}:
-        texto_label = Label(frame_principal, text="Digite o caminho da sua pasta (ex: Images/.../PastaDoArquivo): ")
-        texto_label.pack()
-
-        entrada.pack()
-
-        botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_pasta3()])
-        botao.pack()
-
-    elif possui_pasta in {"n", "nao", "não"}:
-        texto_label = Label(frame_principal, text="Deseja criar uma pasta?" "S/N: ")
-        texto_label.pack()
-
-        entrada.pack()
-
-        botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), criar_pasta_nova()])
-        botao.pack()
+    botao = Button(frame_principal, text="Enviar", command=lambda: [limpar_frame_principal(), definir_pasta3()])
+    botao.pack()
 
 
 def definir_pasta3():
@@ -239,6 +252,40 @@ def definir_pasta3():
 
         botao = Button(frame_principal, text="Ok", command=lambda: [limpar_frame_principal(), organizar_arquivos()])
         botao.pack()
+
+    else:
+        texto_label = Label(frame_principal, text="Sinto muito, mas o caminho do diretório fornecido não leva a nenhuma pasta em seu sistema.")
+        texto_label.pack()
+
+        texto_label = Label(frame_principal, text="Você possivelmente escreveu algo errado, ou não organizou da forma correta. Lembre-se: ")
+        texto_label.pack()
+
+        texto_label = Label(frame_principal, text="O caminho deverá ser escrito no formato especificado, por exemplo, 'Documents/.../PastaQueDesejaOrganizar'")
+        texto_label.pack()
+
+        texto_label = Label(frame_principal, text="O '...' representa outras pastas que podem estar no caminho entre o diretório base e diretório que deseja organizar.")
+        texto_label.pack()
+
+        texto_label = Label(frame_principal, text="E diretórios base geralmente ao todo são geralmente, 'Documents, Images, Dowloads, Área de trabalho, Videos, etc'")
+        texto_label.pack()
+
+        texto_label = Label(frame_principal, text=("Clique no botão para voltar até a página anterior"))
+        texto_label.pack()
+
+        botao = Button(frame_principal, text="Voltar", command=lambda: [limpar_frame_principal(), definir_pasta2()])
+        botao.pack()
+
+
+def confirmar_criacao_pasta():
+    texto_label = Label(frame_principal, text="Deseja criar uma nova pasta?")
+    texto_label.pack()
+
+    botao = Button(frame_principal, text="Sim", command=lambda: [limpar_frame_principal(), criar_pasta_nova()])
+    botao.pack()
+
+    botao = Button(frame_principal, text="Não", command=lambda: [limpar_frame_principal(), nao_criar_pasta()])
+    botao.pack()
+
 
 def criar_pasta_nova():
         criar_pasta = entrada.get()
@@ -389,7 +436,7 @@ def organizar_arquivos():
     texto_label = Label(frame_principal, text="Pronto!")
     texto_label.pack()
 
-    texto_label = Label(frame_principal, text="Seu arquivos estão organizados de acordo com o estilo esscolhido.")
+    texto_label = Label(frame_principal, text="Seu arquivos estão organizados de acordo com o estilo escolhido.")
     texto_label.pack()
 
     texto_label = Label(frame_principal, text="Aprecie o trabalho árduo de quase nada.")
@@ -433,6 +480,8 @@ def criar_pastas():
 # Função para limpar o frame principal antes de adicionar novos elementos
 def limpar_frame_principal():
     for widget in frame_principal.winfo_children():
+        widget.pack_forget()
+    for widget in frame_abaixo.winfo_children():
         widget.pack_forget()
 
 # Início da produção do Tkinter e janelas.
