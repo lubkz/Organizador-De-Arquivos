@@ -1,7 +1,5 @@
-import os
 from pathlib import Path
-import tkinter as tk
-from tkinter import ttk
+
 
 Estilos = {"1": "Padrão : Nome_Função_Id; Função_Nome_Id; Nome_Id_Função; Etc; (Ex: JoséMedinaFerreira_Atividade1_2312312)",
            "2": "Customizado : CustomNome_CustomNome_CustomNome"}
@@ -41,17 +39,22 @@ def organizar_arquivos(diretorio_base, EstiloEscolhido, primeira_pasta, segunda_
 
         pasta_sub_nome = input("Digite um nome para a sua Sub Pasta: ")
 
-
-        contador = 0
+        # Função de adicionar númerações aposentada por motivos trabalhistas
+        #contador = 0
 
         for item in diretorio_base.glob("*"):
-            contador = contador + 1
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #contador = contador + 1
 
-            pasta_nome_completo = f"{pasta_nome}{contador}"
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #pasta_nome_completo = f"{pasta_nome}{contador}"
+            pasta_nome_completo = f"{pasta_nome}"
             diretorio_base_inicial = diretorio_base / pasta_nome_completo
             diretorio_base_inicial.mkdir(parents=True, exist_ok=True)
 
-            pasta_sub_nome_completo = f"{pasta_sub_nome}{contador}"
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #pasta_sub_nome_completo = f"{pasta_sub_nome}{contador}"
+            pasta_sub_nome_completo = f"{pasta_sub_nome}"
             diretorio_sub_base_inicial = diretorio_base_inicial / pasta_sub_nome_completo
             diretorio_sub_base_inicial.mkdir(parents=True, exist_ok=True)
 
@@ -61,16 +64,21 @@ def organizar_arquivos(diretorio_base, EstiloEscolhido, primeira_pasta, segunda_
             print(item.name)
 
     elif EstiloEscolhido == "1":
-        contador = 0
+        # Função de adicionar númerações aposentada por motivos trabalhistas
+        # contador = 0
 
         for item in diretorio_base.glob('*'):
             nome_pasta = item.name.split("_")[primeira_pasta]
             diretorio_base_inicial = diretorio_base / "".join(nome_pasta)
             diretorio_base_inicial.mkdir(parents=True, exist_ok=True)
 
-            contador += 1
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #contador += 1
             nome_sub_pasta = item.name.split("_")[segunda_pasta]
-            nome_sub_pasta_completo = f"{nome_sub_pasta}{contador}"
+
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #nome_sub_pasta_completo = f"{nome_sub_pasta}{contador}"
+            nome_sub_pasta_completo = f"{nome_sub_pasta}"
             diretorio_base_sub_inicial = diretorio_base_inicial / "".join(nome_sub_pasta_completo)
             diretorio_base_sub_inicial.mkdir(parents=True, exist_ok=True)
 
