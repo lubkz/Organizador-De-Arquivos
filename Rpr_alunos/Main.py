@@ -1,29 +1,60 @@
-import os
 from pathlib import Path
-import tkinter as tk
-from tkinter import ttk
 
-Estilos = {"1": "Nome_Função_Id (Ex: JoséMedinaFerreira_Atividade1_2312312)",
-           "2": "Função_Nome_Id (Ex: Planilhas_RobertoFerreira_2312312)",
-           "3": "CustomNome_CustomNome_CustomNome"}
 
-def organizar_arquivos(diretorio_base, EstiloEscolhido):
-    if EstiloEscolhido == "3":
+Estilos = {"1": "Padrão : Nome_Função_Id; Função_Nome_Id; Nome_Id_Função; Etc; (Ex: JoséMedinaFerreira_Atividade1_2312312)",
+           "2": "Customizado : CustomNome_CustomNome_CustomNome"}
+
+Formatos = {"1": "Primeira parte. (Aqui_Pasta_Pasta)",
+            "2": "Segunda parte. (Pasta_Aqui_Pasta)",
+            "3": "Terceira parte. (Pasta_Pasta_Aqui)"
+}
+
+# Variáveis responsáveis pelo Formato Padrão
+def definir_formato(EstiloEscolhido):
+    if EstiloEscolhido == "1":
+        print(Formatos)
+        print("O estilo padrão escolhe, por padrão, o nome das pastas pelo nome escrito nos arquivos.")
+        print("Dessa forma, ele vai escolher o primeiro e o ultimo nome do arquivo, separado com '_', para a Pasta Principal e a Sub Pasta, respectivamente.")
+        decidir_formato = input("Caso, porém, deseje que seus arquivos sejam nomeados em outra ordem, digite 'Trocar'. Caso deseje manter, digite 'Manter': ")
+        decidir_formato = decidir_formato.lower()
+        if decidir_formato == "trocar":
+            # Definir o formato em que as pastas serão organizadas.
+            print(Formatos)
+            primeira_pasta = eval(input("Qual parte dos textos dos arquivos você deseja que seja o nome da sua Primeira leva de pastas?: "))
+            print(Formatos)
+            segunda_pasta = eval(input("Qual parte dos dos textos dos arquivos você deseja que seja o nome da sua Segunda leva de pastas?: "))
+            primeira_pasta -= 1
+            segunda_pasta -= 1
+            return primeira_pasta, segunda_pasta
+        else:
+            print("Ok! Você escolheu manter o formato padrão.")
+            return 0, 2
+    else:
+        print("Eu e casca de bala")
+        return 0, 2
+
+def organizar_arquivos(diretorio_base, EstiloEscolhido, primeira_pasta, segunda_pasta):
+    if EstiloEscolhido == "2":
         pasta_nome = input("Digite um nome para a Pasta Principal: ")
 
         pasta_sub_nome = input("Digite um nome para a sua Sub Pasta: ")
 
-
-        contador = 0
+        # Função de adicionar númerações aposentada por motivos trabalhistas
+        #contador = 0
 
         for item in diretorio_base.glob("*"):
-            contador = contador + 1
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #contador = contador + 1
 
-            pasta_nome_completo = f"{pasta_nome}{contador}"
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #pasta_nome_completo = f"{pasta_nome}{contador}"
+            pasta_nome_completo = f"{pasta_nome}"
             diretorio_base_inicial = diretorio_base / pasta_nome_completo
             diretorio_base_inicial.mkdir(parents=True, exist_ok=True)
 
-            pasta_sub_nome_completo = f"{pasta_sub_nome}{contador}"
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #pasta_sub_nome_completo = f"{pasta_sub_nome}{contador}"
+            pasta_sub_nome_completo = f"{pasta_sub_nome}"
             diretorio_sub_base_inicial = diretorio_base_inicial / pasta_sub_nome_completo
             diretorio_sub_base_inicial.mkdir(parents=True, exist_ok=True)
 
@@ -33,13 +64,22 @@ def organizar_arquivos(diretorio_base, EstiloEscolhido):
             print(item.name)
 
     elif EstiloEscolhido == "1":
+        # Função de adicionar númerações aposentada por motivos trabalhistas
+        # contador = 0
+
         for item in diretorio_base.glob('*'):
-            nome_pasta = item.name.split("_")[0]
+            nome_pasta = item.name.split("_")[primeira_pasta]
             diretorio_base_inicial = diretorio_base / "".join(nome_pasta)
             diretorio_base_inicial.mkdir(parents=True, exist_ok=True)
 
-            nome_sub_pasta = item.name.split("_")[1]
-            diretorio_base_sub_inicial = diretorio_base_inicial / "".join(nome_sub_pasta)
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #contador += 1
+            nome_sub_pasta = item.name.split("_")[segunda_pasta]
+
+            # Função de adicionar númerações aposentada por motivos trabalhistas
+            #nome_sub_pasta_completo = f"{nome_sub_pasta}{contador}"
+            nome_sub_pasta_completo = f"{nome_sub_pasta}"
+            diretorio_base_sub_inicial = diretorio_base_inicial / "".join(nome_sub_pasta_completo)
             diretorio_base_sub_inicial.mkdir(parents=True, exist_ok=True)
 
             novo_caminho = diretorio_base_sub_inicial / item.name
@@ -99,12 +139,15 @@ def questionario():
     EstiloEscolhido = DefinirEstilo()
     print("Tenha em mente que o formato precisa ser como foi especificado nos estilos.")
     print("A máquina usa como base o formato 'example_example_example', então mantenha o formato e não use mais do que dois '_'")
+    print(EstiloEscolhido)
     estilo_confirmacao = input("Você confirma sua escolha? S/N: ")
     if estilo_confirmacao == "s" or "sim":
         pass
     else:
         questionario()
 
+    # Definindo os valores do Formatos de cada pasta.
+    primeira_pasta, segunda_pasta = definir_formato(EstiloEscolhido)
 
     #Saber se o usuário já possui uma pasta:
     possui_pasta = input("Você já possui uma pasta para a organização do projeto? S/N: ")
@@ -116,7 +159,7 @@ def questionario():
             print("Ela será usada para organizar os arquivos que já estão dentro dela.")
             maldicao = input("Se todos os arquivos ainda não estão dentro dela, por favor, coloque-os agora e logo depois digite 'Ok': ")
             if maldicao == "Ok" or "ok":
-                organizar_arquivos(diretorio_base, EstiloEscolhido)
+                organizar_arquivos(diretorio_base, EstiloEscolhido, primeira_pasta, segunda_pasta)
 
         else:
             print("Pasta não encontrada.")
@@ -140,7 +183,7 @@ def questionario():
                 print("Copie e cole, ou mova, todos os arquivos para a nova pasta criada.")
                 resposta1 = input("Após todos os arquivos estárem lá dentro, digite 'Ok':")
                 if resposta1 == "ok":
-                    organizar_arquivos(caminho_completo, EstiloEscolhido)
+                    organizar_arquivos(caminho_completo, EstiloEscolhido, primeira_pasta, segunda_pasta)
                 else:
                     pass
             else:
