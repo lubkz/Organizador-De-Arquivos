@@ -1,3 +1,6 @@
+# Organizador funcional com interface no Tkinter.
+# Ainda em processo de produção.
+
 import os
 from pathlib import Path
 import tkinter as tk
