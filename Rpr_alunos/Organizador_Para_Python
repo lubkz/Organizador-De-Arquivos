@@ -1,3 +1,5 @@
+# Este script é o organizador executavel dentro do Python, ou de alguma outra IDE.
+
 from pathlib import Path
 
 
