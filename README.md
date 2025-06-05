@@ -26,6 +26,11 @@ O Organizador Automático de Arquivos é uma ferramenta desenvolvida em Python p
    python main.py
    ```
 
+## Observações 
+
+- Existen dois arwuivos. Um deles é executado nativamente pelo próprio Python e o outro possui uma interface simples e executável, mas ambos funcionam da mesma forma. Porém a versao feita no Tkinter, claro, é mais complexa.
+  
+
 ## Contribuições
 
 Contribuições são bem-vindas! Sinta-se à vontade para reportar bugs, sugerir melhorias ou enviar pull requests para aprimorar este projeto.
